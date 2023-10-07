@@ -8,9 +8,9 @@ services:
       - "./volumes/smokeping_config:/config"
       - "./volumes/smokeping_data:/data"
     environment:
-      PUID: 1000
-      PGID: 1000
-      TZ: Asia/Tokyo
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Tokyo
 
   nginx:
     image: nginx:latest
