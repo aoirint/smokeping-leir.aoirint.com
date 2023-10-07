@@ -4,8 +4,6 @@ services:
     image: linuxserver/smokeping:2.8.2
     restart: always
     hostname: smokeping
-    ports:
-      - "${HOST_PORT}:80"
     volumes:
       - "./volumes/smokeping_config:/config"
       - "./volumes/smokeping_data:/data"
@@ -13,3 +11,23 @@ services:
       PUID: 1000
       PGID: 1000
       TZ: Asia/Tokyo
+
+  nginx:
+    image: nginx:latest
+    restart: always
+    depends_on:
+      - smokeping
+    volumes:
+      - ./nginx_templates:/etc/nginx/templates
+      - ${NGINX_LOG_DIR:?}:/logs
+    environment:
+      - NGINX_ENVSUBST_TEMPLATE_SUFFIX=.nginx
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    command: tunnel run
+    restart: always
+    depends_on:
+      - nginx
+    environment:
+      - TUNNEL_TOKEN=${CLOUDFLARED_TUNNEL_TOKEN:?}
