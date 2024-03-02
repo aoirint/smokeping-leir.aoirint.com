@@ -17,8 +17,9 @@ services:
     depends_on:
       - smokeping
     volumes:
-      - ./nginx_templates:/etc/nginx/templates
-      - ${NGINX_LOG_DIR:?}:/logs
+      - "./nginx_templates:/etc/nginx/templates"
+      - "./volumes/nginx_secrets:/nginx_secrets"
+      - "${NGINX_LOG_DIR:?}:/logs"
     environment:
       - NGINX_ENVSUBST_TEMPLATE_SUFFIX=.nginx
 

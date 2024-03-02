@@ -46,6 +46,9 @@ server {
 
 	add_header Referrer-Policy same-origin;
 
+	auth_basic "Auth Required";
+	auth_basic_user_file /nginx_secrets/smokeping.htpasswd;
+
 	location / {
 		proxy_pass http://smokeping:80;
 		proxy_redirect                          off;
